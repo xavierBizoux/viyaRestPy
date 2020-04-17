@@ -1,0 +1,9 @@
+setup.py
+SASDEVOPSPY/__init__.py
+SASDEVOPSPY/callRest.py
+SASDEVOPSPY.egg-info/PKG-INFO
+SASDEVOPSPY.egg-info/SOURCES.txt
+SASDEVOPSPY.egg-info/dependency_links.txt
+SASDEVOPSPY.egg-info/not-zip-safe
+SASDEVOPSPY.egg-info/requires.txt
+SASDEVOPSPY.egg-info/top_level.txt
