@@ -2,17 +2,13 @@ import sys
 import requests
 from .Authentication import generateAuthToken, readAuthToken
 
-oauthToken = {}
-
 def callRest(endpoint, method, params={}, headers={"acceptType": "application/json", "contentType": "application/json"}, data={}, auth={}):
-    global oauthToken
     # define list of valid methods
     validMethods = ["get", "post", "delete", "put"]
-    if oauthToken == {}:
-        if bool(auth) and len(auth) == 5:
-            oauthToken = generateAuthToken(auth)
-        else:
-            oauthToken = readAuthToken()
+    if bool(auth) and len(auth) == 5:
+        oauthToken = generateAuthToken(auth)
+    else:
+        oauthToken = readAuthToken()
     # execute requests
     url = oauthToken["baseUrl"] + endpoint
     headers.update({"authorization": 'bearer ' + oauthToken["token"]})

@@ -1,14 +1,14 @@
 #!/usr/local/bin/python3
 #
-# getReportContent.py
+# testReportPerformance.py
 # Xavier Bizoux, GEL
 # April 2020
 #
-# Extract report information to be used in a CI/CD process
+# Test report as part of a CI/CD process
 #
 # Change History
 #
-# sbxxab 17APR2020
+# sbxxab 20APR2020
 #
 ####################################################################
 #### DISCLAIMER                                                 ####
@@ -29,24 +29,22 @@
 ####################################################################
 #### COMMAND LINE EXAMPLE                                       ####
 ####################################################################
-#### ./getReportContent.py  -u  myUser                          ####
-####                        -p  myPW                            ####
-####                        -sn http://myServer.sas.com:80      ####
-####                        -an app                             ####
-####                        -as appsecret                       ####
-####                        -rl "/Users/sbxxab/My Folder"       ####
-####                        -rn CarsReport                      ####
-####                        -o  /tmp/CICD/                      ####
+#### ./testReportPerformance.py -u  myAdmin                     ####
+####                            -p  myAdminPW                   ####
+####                            -sn http://myServer.sas.com:80  ####
+####                            -an app                         ####
+####                            -as appsecret                   ####
+####                            -i  /tmp/CICD/CarsReport.json   ####
 ####################################################################
 # Import modules
 import json
 import argparse
-import sys
-from SASDEVOPSPY.Reports import getReportContent
+import os
+from SASDEVOPSPY.Reports import getReportImage
 
 # Define arguments for command line execution
 parser = argparse.ArgumentParser(
-    description="Extract report information to be used in a CI/CD process")
+    description="Retrieve an image from the first page of the report as part of CI/CD process")
 parser.add_argument("-rl",
                     "--reportlocation",
                     help="Location of the report within SAS Viya",
@@ -55,36 +53,37 @@ parser.add_argument("-rn",
                     "--reportname",
                     help="Name of the report within SAS Viya",
                     required=True)
-parser.add_argument("-o",
-                    "--output",
-                    help="Path to save the report information. For example a GIT repository location",
-                    required=True)
 parser.add_argument("-u",
                     "--user",
-                    help="Authentication: User used for the Viya connection.",
-                    required=False)
+                    help="User used for the Viya connection.",
+                    required=True)
 parser.add_argument("-p",
                     "--password",
-                    help="Authentication: Password for the user.",
-                    required=False)
+                    help="Password for the user.",
+                    required=True)
 parser.add_argument("-sn",
                     "--servername",
-                    help="Authentication: URL of the Viya environment (including protocol and port).",
-                    required=False)
+                    help="URL of the Viya environment (including protocol and port).",
+                    required=True)
 parser.add_argument("-an",
                     "--applicationname",
-                    help="Authentication: Name of the application defined based on information on https://developer.sas.com/apis/rest/",
-                    required=False)
+                    help="Name of the application defined based on information on https://developer.sas.com/apis/rest/",
+                    required=True)
 parser.add_argument("-as",
                     "--applicationsecret",
-                    help="Authentication: Secret for the application based on information on https://developer.sas.com/apis/rest/",
-                    required=False)
+                    help="Secret for the application based on information on https://developer.sas.com/apis/rest/",
+                    required=True)
+parser.add_argument("-i",
+                    "--input",
+                    help="File to collect the report information. For example a GIT repository location",
+                    required=True)
+
 
 # Read the arguments from the command line
 args = parser.parse_args()
 reportLocation = args.reportlocation
 reportName = args.reportname
-outFolder = args.output
+inFile = args.input
 
 # Collect information needed for authentication
 authInfo = {}
@@ -99,17 +98,33 @@ if args.applicationname:
 if args.applicationsecret:
     authInfo["appSecret"] = args.applicationsecret
 
-reportContent = getReportContent(
-    reportName,
-    path=reportLocation,
+
+# Read information from the JSON file
+with open(inFile) as input:
+    data = json.load(input)
+
+# Generate an image from the first section of the report
+reportImage = getReportImage(
+    name=data["name"],
+    path=data["location"],
     auth=authInfo)
 
-# Create a JSON representation of the report
-data = {"name": reportName,
-        "location": reportLocation,
-        "content": reportContent["json"]}
+# Collect performance data from the image generation
+perfData = {
+    "testDate": reportImage["json"]["creationTimeStamp"],
+    "duration": reportImage["json"]["duration"]
+}
 
-# Generate output file
-outFile = outFolder + reportName + ".json"
+# Write the performance data to the perf file of the report.
+# If the file doesn't exist, it will be created automatically.
+outFile = inFile.replace(".json", ".perf")
+if os.path.isfile(outFile):
+    with open(outFile) as out:
+        data = json.load(out)
+        data["performance"].append(perfData)
+else:
+    data = {"name": data["name"],
+            "location": data["location"], "performance": [perfData]}
+
 with open(outFile, "w") as out:
     json.dump(data, out)
