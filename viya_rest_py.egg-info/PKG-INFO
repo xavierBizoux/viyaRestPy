@@ -1,7 +1,7 @@
 Metadata-Version: 1.0
-Name: SASDEVOPSPY
+Name: viya-rest-py
 Version: 0.1
-Summary: Python wrapper to ease the DevOps process for SAS Viya
+Summary: Python wrapper to ease access to SAS Viya REST API's
 Home-page: http://github.com/sbxxab/funniest
 Author: Xavier Bizoux
 Author-email: xavier.bizoux@sas.com
