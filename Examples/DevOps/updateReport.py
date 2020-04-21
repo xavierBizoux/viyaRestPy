@@ -40,7 +40,7 @@
 
 import json
 import argparse
-from SASDEVOPSPY.Reports import getReport, updateReportContent
+from viyaRestPy.Reports import getReport, updateReportContent
 
 # Define arguments for command line execution
 parser = argparse.ArgumentParser(

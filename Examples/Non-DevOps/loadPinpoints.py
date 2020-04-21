@@ -44,7 +44,7 @@ import json
 import argparse
 import sys
 import csv
-from sharedFunctions import getReportContent, getReport, createReport, updateReportContent
+from viyaRestPy.Reports import getReportContent, getReport, createReport, updateReportContent
 
 # Define arguments for command line execution
 parser = argparse.ArgumentParser(

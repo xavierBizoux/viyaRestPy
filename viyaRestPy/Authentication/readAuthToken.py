@@ -2,7 +2,7 @@ import os
 import sys
 import json
 from datetime import datetime
-from SASDEVOPSPY.Authentication import getBaseUrl
+from .getBaseUrl import getBaseUrl
 
 def readAuthToken():
     global oauthToken

@@ -1,13 +1,13 @@
 from setuptools import setup
 
-setup(name='viya-rest-py',
+setup(name='viyaRestPy',
       version='0.1',
       description="Python wrapper to ease access to SAS Viya REST API's",
       url='http://github.com/sbxxab/funniest',
       author='Xavier Bizoux',
       author_email='xavier.bizoux@sas.com',
       license='MIT',
-      packages=['viya-rest-py'],
+      packages=['viyaRestPy'],
       install_requires=[
           'requests'
       ],

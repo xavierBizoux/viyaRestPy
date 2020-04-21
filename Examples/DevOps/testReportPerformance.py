@@ -40,7 +40,7 @@
 import json
 import argparse
 import os
-from SASDEVOPSPY.Reports import getReportImage
+from viyaRestPy.Reports import getReportImage
 
 # Define arguments for command line execution
 parser = argparse.ArgumentParser(

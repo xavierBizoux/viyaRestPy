@@ -41,7 +41,7 @@
 import json
 import argparse
 import sys
-from SASDEVOPSPY.Reports import deleteReport
+from viyaRestPy.Reports import deleteReport
 
 # Define arguments for command line execution
 parser = argparse.ArgumentParser(

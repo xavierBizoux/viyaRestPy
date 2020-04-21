@@ -1,5 +1,5 @@
 Metadata-Version: 1.0
-Name: viya-rest-py
+Name: viyaRestPy
 Version: 0.1
 Summary: Python wrapper to ease access to SAS Viya REST API's
 Home-page: http://github.com/sbxxab/funniest

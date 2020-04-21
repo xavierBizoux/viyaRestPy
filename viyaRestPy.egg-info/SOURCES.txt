@@ -1,0 +1,9 @@
+setup.py
+viyaRestPy/__init__.py
+viyaRestPy/callRest.py
+viyaRestPy.egg-info/PKG-INFO
+viyaRestPy.egg-info/SOURCES.txt
+viyaRestPy.egg-info/dependency_links.txt
+viyaRestPy.egg-info/not-zip-safe
+viyaRestPy.egg-info/requires.txt
+viyaRestPy.egg-info/top_level.txt
