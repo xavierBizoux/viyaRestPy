@@ -23,12 +23,12 @@ def createReport(name="", path="", content="", auth={}):
                           params=params,
                           headers=headers,
                           auth=auth)
+        print("The report named '{0:s}' has been created in '{1:s}'.".format(name, path))
         if bool(content):
             updateReportContent(
                 content=content,
                 report=report,
                 auth=auth)
-            print("The report named '{0:s}' has been created in '{1:s}'.".format(name, path))
         return report
     else:
         print("A report named {0:s} already exists in {1:s}.".format(name, path))

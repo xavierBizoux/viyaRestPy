@@ -7,7 +7,13 @@ setup(name='viyaRestPy',
       author='Xavier Bizoux',
       author_email='xavier.bizoux@sas.com',
       license='MIT',
-      packages=['viyaRestPy'],
+      packages=find_packages(include=[
+                             'Authentication',
+                             'Authentication.*',
+                             'Folders',
+                             'Folders.*',
+                             'Reports',
+                             'Reports.*']),
       install_requires=[
           'requests'
       ],

@@ -25,7 +25,8 @@ def deleteReport(name="", path="", reportId="", auth={}):
                         'Accept': '*/*'
                     }
                     try:
-                        callRest(endpoint, "delete", headers=headers, auth=auth)
+                        response = callRest(endpoint, "delete", headers=headers, auth=auth)
+                        return response
                     except:
                         print("The report named '{0:s}' could not be deleted '{1:s}'.".format(name, path))
                     print("The report named '{0:s}' located in '{1:s}' has been deleted.".format(name, path))
