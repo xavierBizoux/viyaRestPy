@@ -4,7 +4,7 @@ from ..callRest import callRest
 def getReportImageJob(jobId, auth={}):
     endpoint = "/reportImages/jobs/{0:s}".format(jobId)
     params = {
-        "wait": 5
+        "wait": 10
     }
     headers = {
         'Accept': 'application/vnd.sas.report.images.job+json'
