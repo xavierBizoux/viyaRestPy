@@ -45,14 +45,6 @@ from viyaRestPy.Reports import getReportImage
 # Define arguments for command line execution
 parser = argparse.ArgumentParser(
     description="Retrieve an image from the first page of the report as part of CI/CD process")
-parser.add_argument("-rl",
-                    "--reportlocation",
-                    help="Location of the report within SAS Viya",
-                    required=True)
-parser.add_argument("-rn",
-                    "--reportname",
-                    help="Name of the report within SAS Viya",
-                    required=True)
 parser.add_argument("-u",
                     "--user",
                     help="User used for the Viya connection.",
@@ -81,8 +73,6 @@ parser.add_argument("-i",
 
 # Read the arguments from the command line
 args = parser.parse_args()
-reportLocation = args.reportlocation
-reportName = args.reportname
 inFile = args.input
 
 # Collect information needed for authentication

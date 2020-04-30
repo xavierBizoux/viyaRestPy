@@ -32,5 +32,5 @@ def createReport(name="", path="", content="", auth={}):
         return report
     else:
         print("A report named {0:s} already exists in {1:s}.".format(name, path))
-        print("Please consider running updateReportContent function to update the exiting report or delete the report.")
+        print("Please consider running updateReportContent function to update the existing report or delete the report.")
 
