@@ -88,55 +88,25 @@ As the package is not published (yet) to a Python repository, here are the steps
 1. In the Terminal, execute the following command:
 
     ```bash
-    py -3 setup.py develop
+    py -3 -m pip install -e .
     ```
 
     This command will build the package in development mode and display the following information in the Terminal (if you are running on Windows):
 
     ```bash
-    py -3 setup.py develop
-    running develop
-    running egg_info
-    writing viyaRestPy.egg-info\PKG-INFO
-    writing dependency_links to viyaRestPy.egg-info\dependency_links.txt
-    writing requirements to viyaRestPy.egg-info\requires.txt
-    writing top-level names to viyaRestPy.egg-info\top_level.txt
-    reading manifest file 'viyaRestPy.egg-info\SOURCES.txt'
-    writing manifest file 'viyaRestPy.egg-info\SOURCES.txt'
-    running build_ext
-    Creating c:\python38\lib\site-packages\viyaRestPy.egg-link (link to .)
-    viyaRestPy 0.1 is already the active version in easy-install.pth
-
-    Installed c:\users\student\documents\viyarestpy
-    Processing dependencies for viyaRestPy==0.1
-    Searching for requests==2.23.0
-    Best match: requests 2.23.0
-    Adding requests 2.23.0 to easy-install.pth file
-
-    Using c:\python38\lib\site-packages
-    Searching for certifi==2020.4.5.1
-    Best match: certifi 2020.4.5.1
-    Adding certifi 2020.4.5.1 to easy-install.pth file
-
-    Using c:\python38\lib\site-packages
-    Searching for urllib3==1.25.8
-    Best match: urllib3 1.25.8
-    Adding urllib3 1.25.8 to easy-install.pth file
-
-    Using c:\python38\lib\site-packages
-    Searching for idna==2.9
-    Best match: idna 2.9
-    Adding idna 2.9 to easy-install.pth file
-
-    Using c:\python38\lib\site-packages
-    Searching for chardet==3.0.4
-    Best match: chardet 3.0.4
-    Adding chardet 3.0.4 to easy-install.pth file
-    Installing chardetect-script.py script to C:\Python38\Scripts
-    Installing chardetect.exe script to C:\Python38\Scripts
-
-    Using c:\python38\lib\site-packages
-    Finished processing dependencies for viyaRestPy==0.1
+    py -3 -m pip install -e .
+    Obtaining file:///C:/Users/student/Documents/viyarestpy
+    Requirement already satisfied: requests in c:\python38\lib\site-packages (from viyaRestPy==0.1) (2.23.0)
+    Requirement already satisfied: chardet<4,>=3.0.2 in c:\python38\lib\site-packages (from requests->viyaRestPy==0.1) (3.0.4)
+    Requirement already satisfied: urllib3!=1.25.0,!=1.25.1,<1.26,>=1.21.1 in c:\python38\lib\site-packages (from requests->viyaRestPy==0.1) (1.25.8)
+    Requirement already satisfied: idna<3,>=2.5 in c:\python38\lib\site-packages (from requests->viyaRestPy==0.1) (2.9)
+    Requirement already satisfied: certifi>=2017.4.17 in c:\python38\lib\site-packages (from requests->viyaRestPy==0.1) (2020.4.5.1)
+    Installing collected packages: viyaRestPy
+    Attempting uninstall: viyaRestPy
+        Found existing installation: viyaRestPy 0.1
+        Can't uninstall 'viyaRestPy'. No files were found to uninstall.
+    Running setup.py develop for viyaRestPy
+    Successfully installed viyaRestPy
     ```
 
 1. You are now ready to use the package and write your own code!
