@@ -59,7 +59,7 @@ The principle is that all of the "Lego" functions are to behave as the callRest 
 
 As the package is not published (yet) to a Python repository, here are the steps to install the package on your environment:
 
-1. Open the project on <https://gitlab.sas.com/GEL/viyarestpy>
+1. Open the project on <https://github.com/xavierBizoux/viyaRestPy>
 1. Click on **Clone** and then on the **Copy** icon.
 
    ![Copy clone information](images/copyCloneLink.png)
