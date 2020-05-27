@@ -1,6 +1,6 @@
 import sys
 import requests
-from .Authentication import generateAuthToken, readAuthToken
+from .Authentication import generateAuthToken, readAuthToken, readOAuthToken
 
 oauthToken = {}
 
@@ -9,8 +9,11 @@ def callRest(endpoint, method, params={}, headers={"acceptType": "application/js
     # define list of valid methods
     validMethods = ["get", "post", "delete", "put"]
     if oauthToken == {}:
-        if bool(auth) and len(auth) == 5:
-            oauthToken = generateAuthToken(auth)
+        if bool(auth):
+            if len(auth) == 5:
+                oauthToken = generateAuthToken(auth)
+            elif len(auth) == 1 and bool(auth["serverName"]):
+                oauthToken = readOAuthToken(auth["serverName"])
         else:
             oauthToken = readAuthToken()
     # execute requests
@@ -35,7 +38,6 @@ def callRest(endpoint, method, params={}, headers={"acceptType": "application/js
                 try:
                     result["json"] = response.json()
                 except ValueError:
-                    print(method + url)
                     print("The request did not return a JSON formatted string")
                     print("The request returned: {0:s}".format(response.text))
                     sys.exit()
