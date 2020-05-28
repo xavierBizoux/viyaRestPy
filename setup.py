@@ -15,7 +15,8 @@ setup(name='viyaRestPy',
                              'Reports',
                              'Reports.*']),
       install_requires=[
-          'requests'
+          'requests',
+          'flask'
       ],
       include_package_data=True,
       zip_safe=False)

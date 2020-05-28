@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>SAS Viya OAuth Token generator</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1 class="display-4">SAS Viya OAuth Token generator</h1>
+            <p class="lead">This simple application will generate a token that can be used to call SAS Viya REST API's.</p>
+            <hr class="my-4">
+            <p class="lead">
+                <a class="btn btn-primary btn-lg" href="https://blogs.sas.com/content/sgf/2019/01/25/authentication-to-sas-viya/" target="_blank" rel="noopener noreferrer"
+                    role="button">Learn more</a>
+            </p>
+        </div>
+        <form action="/" method="post" enctype="application/json">
+            <div class="form-group">
+                <label for="hostname">SAS Viya Web Server Hostname</label>
+                <input id="hostname" type="text" name="hostname" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="consulToken">Consul Client Token</label>
+                <input id="consulToken" type="text" name="consulToken" class="form-control">
+                <small class="form-text text-muted">Consul token can be retrieved from the SAS server by a SAS Administrator (sudo user) on the following location:
+                    /opt/sas/viya/config/etc/SASSecurityCertificateFramework/tokens/consul/default/client.token
+                </small>
+            </div>
+            <div class="form-group">
+                <label for="client_id">Client Application Name</label>
+                <input id="client_id" type="text" name="client_id" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="client_secret">Client Application Secret</label>
+                <input id="client_secret" type="text" name="client_secret" class="form-control">
+            </div>
+            <button id="submitButton" class="btn btn-primary" type="submit">Generate</button>
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous">
+        </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous">
+        </script>
+</body>
