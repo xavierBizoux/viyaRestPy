@@ -16,7 +16,7 @@ credentialsFile = ""
 def generateIDToken(hostname, consulToken):
     endpoint = "/SASLogon/oauth/clients/consul?callback=false&serviceId=app"
     headers = {"X-Consul-Token": consulToken}
-    response = requests.post(hostname+endpoint, headers=headers)
+    response = requests.post(hostname+endpoint, headers=headers, verify=False)
     accessToken = response.json()["access_token"]
     return accessToken
 
@@ -41,7 +41,7 @@ def generateApp(hostname, consulToken, clientId, clientSecret):
         "authorized_grant_types": ["authorization_code", "refresh_token"],
         "redirect_uri": "http://127.0.0.1:5000/accessToken"
     }
-    requests.post(hostname + endpoint, headers=headers, json=data)
+    requests.post(hostname + endpoint, headers=headers, json=data, verify=False)
     url = "{0}/SASLogon/oauth/authorize?client_id={1}&response_type=code".format(
         hostname,
         appName)
@@ -64,7 +64,7 @@ def generateAccessToken(hostname, code, appName, appSecret):
         hostname + endpoint,
         headers=headers,
         params=data,
-        auth=auth)
+        auth=auth, verify=False)
     if platform.system == "Windows":
         credentialsFile = os.path.join(
             os.path.expanduser('~'),
