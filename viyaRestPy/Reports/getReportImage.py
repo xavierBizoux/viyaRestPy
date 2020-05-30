@@ -1,4 +1,5 @@
 import json
+import sys
 from .getReport import getReport
 from .getReportImageJob import getReportImageJob
 from ..callRest import callRest
@@ -8,13 +9,16 @@ def getReportImage(name="", path="", auth={}):
     # Function to retrieve an image from the report
     report = getReport(name, path=path, auth=auth)
     endpoint = "/reportImages/jobs#requestsParams"
-    data = {
-        "reportUri": "/reports/reports/{0:s}".format(report["json"]["id"]),
-        "size": "600x600",
-        "layoutType": "entireSection",
-        "wait": 5,
-        "refresh": True
-    }
+    if report["json"] != {}:
+        data = {
+            "reportUri": "/reports/reports/{0:s}".format(report["json"]["id"]),
+            "size": "600x600",
+            "layoutType": "entireSection",
+            "wait": 5,
+            "refresh": True
+        }
+    else:
+        sys.exit()
     headers = {
         'Accept': 'application/vnd.sas.report.images.job+json'
     }

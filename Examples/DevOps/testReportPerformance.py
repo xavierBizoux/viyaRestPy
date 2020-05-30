@@ -48,11 +48,11 @@ parser = argparse.ArgumentParser(
 parser.add_argument("-u",
                     "--user",
                     help="User used for the Viya connection.",
-                    required=True)
+                    required=False)
 parser.add_argument("-p",
                     "--password",
                     help="Password for the user.",
-                    required=True)
+                    required=False)
 parser.add_argument("-sn",
                     "--servername",
                     help="URL of the Viya environment (including protocol and port).",
@@ -60,11 +60,11 @@ parser.add_argument("-sn",
 parser.add_argument("-an",
                     "--applicationname",
                     help="Name of the application defined based on information on https://developer.sas.com/apis/rest/",
-                    required=True)
+                    required=False)
 parser.add_argument("-as",
                     "--applicationsecret",
                     help="Secret for the application based on information on https://developer.sas.com/apis/rest/",
-                    required=True)
+                    required=False)
 parser.add_argument("-i",
                     "--input",
                     help="File to collect the report information. For example a GIT repository location",

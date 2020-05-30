@@ -31,7 +31,7 @@ def callRest(endpoint, method, params={}, headers={"acceptType": "application/js
             sys.exit()
         else:
             result = {
-                'json': [],
+                'json': {},
                 'headers': response.headers
             }
             if method in ["get", "post"]:

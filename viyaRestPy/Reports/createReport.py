@@ -1,13 +1,15 @@
 from .getReport import getReport
 from .updateReportContent import updateReportContent
-from ..Folders import getFolder
+from ..Folders import getFolder, createFolder
 from ..callRest import callRest
 
 
 def createReport(name="", path="", content="", auth={}):
     report = getReport(name=name, path=path, auth=auth)
-    if report == {}:
+    if report['json'] == {}:
         folder = getFolder(path, auth=auth)
+        if folder["json"] == {}:
+            folder = createFolder(path, auth=auth)
         folderId = folder["json"]["links"][0]["uri"]
         endpoint = "/reports/reports"
         data = {"name": name,

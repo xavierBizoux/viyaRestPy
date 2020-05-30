@@ -1,3 +1,4 @@
+import sys
 from .getReport import getReport
 from ..callRest import callRest
 
@@ -7,9 +8,11 @@ def updateReportContent(content="", report={}, name="", path="", auth={}):
             report["json"]["id"])
     else:
         report = getReport(name, path=path, auth=auth)
-        if report != {}:
+        if report["json"] != {}:
             endpoint = "/reports/reports/{0:s}/content".format(
             report["json"]["id"])
+        else:
+            sys.exit()
     data = content
     headers = {
         'Content-Type': 'application/vnd.sas.report.content+json',

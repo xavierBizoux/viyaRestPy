@@ -5,7 +5,7 @@ def getReport(name, folderId="", path="", auth={}):
     # Identify the report based on passed report information
     selectedReport = findObjectInFolder(
         name, folderId=folderId, path=path, auth=auth)
-    if selectedReport["json"] != "" :
+    if selectedReport["json"] != {} :
         reportUri = selectedReport["json"]["uri"]
         endpoint = "{0:s}#standard".format(reportUri)
         headers = {
@@ -17,5 +17,5 @@ def getReport(name, folderId="", path="", auth={}):
             headers=headers,
             auth=auth)
     else:
-        response = {}
+        response = {'json': {}}
     return response
