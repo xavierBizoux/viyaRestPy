@@ -1,14 +1,14 @@
 #!/usr/local/bin/python3
 #
-# getReportContent.py
+# create_folder.py
 # Xavier Bizoux, GEL
-# April 2020
+# May 2020
 #
-# Extract report information to be used in a CI/CD process
+# Create folder recursively
 #
 # Change History
 #
-# sbxxab 17APR2020
+# sbxxab 30MAY2020
 #
 ####################################################################
 #### DISCLAIMER                                                 ####
@@ -29,19 +29,18 @@
 ####################################################################
 #### COMMAND LINE EXAMPLE                                       ####
 ####################################################################
-#### ./getReportContent.py  -u myAdmin                          ####
+#### ./create_folder.py     -u myAdmin                          ####
 ####                        -p myAdminPW                        ####
 ####                        -sn http://myServer.sas.com:80      ####
 ####                        -an app                             ####
 ####                        -as appsecret                       ####
-####                        -rl "/Users/sbxxab/My Folder"       ####
-####                        -rn CarsReport                      ####
+####                        -f "/Users/sbxxab/My Folder"        ####
 ####################################################################
 # Import modules
 import json
 import argparse
 import sys
-from viyaRestPy.Folders import createFolder
+from viyaRestPy.Folders import create_folder
 
 # Define arguments for command line execution
 parser = argparse.ArgumentParser(
@@ -56,7 +55,7 @@ parser.add_argument("-u",
                     required=False)
 parser.add_argument("-p",
                     "--password",
-                    help="Authentication: Password for the administrater user.",
+                    help="Authentication: Password for the administrative user.",
                     required=False)
 parser.add_argument("-sn",
                     "--servername",
@@ -76,16 +75,16 @@ args = parser.parse_args()
 path = args.folder
 
 # Collect information needed for authentication
-authInfo = {}
+auth_info = {}
 if args.user:
-    authInfo["user"] = args.user
+    auth_info["user"] = args.user
 if args.password:
-    authInfo['pw'] = args.password
+    auth_info['pw'] = args.password
 if args.servername:
-    authInfo["serverName"] = args.servername
+    auth_info["server_name"] = args.servername
 if args.applicationname:
-    authInfo["appName"] = args.applicationname
+    auth_info["app_name"] = args.applicationname
 if args.applicationsecret:
-    authInfo["appSecret"] = args.applicationsecret
+    auth_info["app_secret"] = args.applicationsecret
 
-createFolder(path, auth=authInfo)
+create_folder(path, auth=auth_info)

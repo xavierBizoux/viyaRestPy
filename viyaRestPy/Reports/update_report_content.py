@@ -1,13 +1,13 @@
 import sys
-from .getReport import getReport
-from ..callRest import callRest
+from .get_report import get_report
+from ..call_rest import call_rest
 
-def updateReportContent(content="", report={}, name="", path="", auth={}):
+def update_report_content(content="", report={}, name="", path="", auth={}):
     if bool(report):
         endpoint = "/reports/reports/{0:s}/content".format(
             report["json"]["id"])
     else:
-        report = getReport(name, path=path, auth=auth)
+        report = get_report(name, path=path, auth=auth)
         if report["json"] != {}:
             endpoint = "/reports/reports/{0:s}/content".format(
             report["json"]["id"])
@@ -18,4 +18,4 @@ def updateReportContent(content="", report={}, name="", path="", auth={}):
         'Content-Type': 'application/vnd.sas.report.content+json',
         'If-Match': report["headers"]["ETag"]
     }
-    callRest(endpoint, "put", data=data, headers=headers, auth=auth)
+    call_rest(endpoint, "put", data=data, headers=headers, auth=auth)

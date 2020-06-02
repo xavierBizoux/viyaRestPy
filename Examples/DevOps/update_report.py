@@ -1,14 +1,15 @@
 #!/usr/local/bin/python3
 #
-# testReportPerformance.py
+# updateReport.py
 # Xavier Bizoux, GEL
 # April 2020
 #
-# Test report as part of a CI/CD process
+# Update a report using information extracted from a source
+# environment using get_reportContent.py sample code.
 #
 # Change History
 #
-# sbxxab 20APR2020
+# sbxxab 17APR2020
 #
 ####################################################################
 #### DISCLAIMER                                                 ####
@@ -29,29 +30,28 @@
 ####################################################################
 #### COMMAND LINE EXAMPLE                                       ####
 ####################################################################
-#### ./testReportPerformance.py -u  myAdmin                     ####
-####                            -p  myAdminPW                   ####
-####                            -sn http://myServer.sas.com:80  ####
-####                            -an app                         ####
-####                            -as appsecret                   ####
-####                            -i  /tmp/CICD/CarsReport.json   ####
+#### ./update_report.py -u myAdmin                              ####
+####                    -p myAdminPW                            ####
+####                    -sn http://myServer.sas.com             ####
+####                    -an app                                 ####
+####                    -as appsecret                           ####
+####                    -i  /tmp/CICD/CarsReport.json           ####
 ####################################################################
-# Import modules
+
 import json
 import argparse
-import os
-from viyaRestPy.Reports import getReportImage
+from viyaRestPy.Reports import get_report, update_report_content
 
 # Define arguments for command line execution
 parser = argparse.ArgumentParser(
-    description="Retrieve an image from the first page of the report as part of CI/CD process")
+    description="Import report in a target environment")
 parser.add_argument("-u",
                     "--user",
-                    help="User used for the Viya connection.",
+                    help="User used for the Viya connection and who will update the preferences.",
                     required=False)
 parser.add_argument("-p",
                     "--password",
-                    help="Password for the user.",
+                    help="Password for the administrative user.",
                     required=False)
 parser.add_argument("-sn",
                     "--servername",
@@ -73,48 +73,29 @@ parser.add_argument("-i",
 
 # Read the arguments from the command line
 args = parser.parse_args()
-inFile = args.input
+in_file = args.input
 
 # Collect information needed for authentication
-authInfo = {}
+auth_info = {}
 if args.user:
-    authInfo["user"] = args.user
+    auth_info["user"] = args.user
 if args.password:
-    authInfo['pw'] = args.password
+    auth_info['pw'] = args.password
 if args.servername:
-    authInfo["serverName"] = args.servername
+    auth_info["server_name"] = args.servername
 if args.applicationname:
-    authInfo["appName"] = args.applicationname
+    auth_info["app_name"] = args.applicationname
 if args.applicationsecret:
-    authInfo["appSecret"] = args.applicationsecret
+    auth_info["app_secret"] = args.applicationsecret
 
-
-# Read information from the JSON file
-with open(inFile) as input:
+# Read the input file containing the report information
+with open(in_file) as input:
     data = json.load(input)
 
-# Generate an image from the first section of the report
-reportImage = getReportImage(
+# Update the report using the information from the source file
+update_report_content(
+    data["content"],
     name=data["name"],
     path=data["location"],
-    auth=authInfo)
+    auth=auth_info)
 
-# Collect performance data from the image generation
-perfData = {
-    "testDate": reportImage["json"]["creationTimeStamp"],
-    "duration": reportImage["json"]["duration"]
-}
-
-# Write the performance data to the perf file of the report.
-# If the file doesn't exist, it will be created automatically.
-outFile = inFile.replace(".json", ".perf")
-if os.path.isfile(outFile):
-    with open(outFile) as out:
-        data = json.load(out)
-        data["performance"].append(perfData)
-else:
-    data = {"name": data["name"],
-            "location": data["location"], "performance": [perfData]}
-
-with open(outFile, "w") as out:
-    json.dump(data, out)

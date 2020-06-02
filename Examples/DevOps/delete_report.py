@@ -1,11 +1,11 @@
 #!/usr/local/bin/python3
 #
-# updateReport.py
+# delete_report.py
+#
 # Xavier Bizoux, GEL
 # April 2020
 #
-# Update a report using information extracted from a source
-# environment using getReportContent.py sample code.
+# Delete an existing report
 #
 # Change History
 #
@@ -30,72 +30,71 @@
 ####################################################################
 #### COMMAND LINE EXAMPLE                                       ####
 ####################################################################
-#### ./createReport.py  -u myAdmin                              ####
-####                    -p myAdminPW                            ####
-####                    -sn http://myServer.sas.com             ####
-####                    -an app                                 ####
-####                    -as appsecret                           ####
-####                    -i  /tmp/CICD/CarsReport.json           ####
+#### ./delete_report.py     -u myAdmin                          ####
+####                        -p myAdminPW                        ####
+####                        -sn http://myServer.sas.com:80      ####
+####                        -an app                             ####
+####                        -as appsecret                       ####
+####                        -rl "/Users/sbxxab/My Folder"       ####
+####                        -rn CarsReport                      ####
 ####################################################################
-
+# Import modules
 import json
 import argparse
-from viyaRestPy.Reports import getReport, updateReportContent
+import sys
+from viyaRestPy.Reports import delete_report
 
 # Define arguments for command line execution
 parser = argparse.ArgumentParser(
-    description="Import report in a target environment")
+    description="Extract report information to be used in a CI/CD process")
+parser.add_argument("-rl",
+                    "--reportlocation",
+                    help="Location of the report within SAS Viya",
+                    required=True)
+parser.add_argument("-rn",
+                    "--reportname",
+                    help="Name of the report within SAS Viya",
+                    required=True)
 parser.add_argument("-u",
                     "--user",
-                    help="User used for the Viya connection and who will update the preferences.",
+                    help="Authentication: User used for the Viya connection.",
                     required=False)
 parser.add_argument("-p",
                     "--password",
-                    help="Password for the administrative user.",
+                    help="Authentication: Password for the administrater user.",
                     required=False)
 parser.add_argument("-sn",
                     "--servername",
-                    help="URL of the Viya environment (including protocol and port).",
-                    required=True)
+                    help="Authentication: URL of the Viya environment (including protocol and port).",
+                    required=False)
 parser.add_argument("-an",
                     "--applicationname",
-                    help="Name of the application defined based on information on https://developer.sas.com/apis/rest/",
+                    help="Authentication: Name of the application defined based on information on https://developer.sas.com/apis/rest/",
                     required=False)
 parser.add_argument("-as",
                     "--applicationsecret",
-                    help="Secret for the application based on information on https://developer.sas.com/apis/rest/",
+                    help="Authentication: Secret for the application based on information on https://developer.sas.com/apis/rest/",
                     required=False)
-parser.add_argument("-i",
-                    "--input",
-                    help="File to collect the report information. For example a GIT repository location",
-                    required=True)
-
 
 # Read the arguments from the command line
 args = parser.parse_args()
-inFile = args.input
+report_location = args.reportlocation
+report_name = args.reportname
 
 # Collect information needed for authentication
-authInfo = {}
+auth_info = {}
 if args.user:
-    authInfo["user"] = args.user
+    auth_info["user"] = args.user
 if args.password:
-    authInfo['pw'] = args.password
+    auth_info['pw'] = args.password
 if args.servername:
-    authInfo["serverName"] = args.servername
+    auth_info["server_name"] = args.servername
 if args.applicationname:
-    authInfo["appName"] = args.applicationname
+    auth_info["app_name"] = args.applicationname
 if args.applicationsecret:
-    authInfo["appSecret"] = args.applicationsecret
+    auth_info["app_secret"] = args.applicationsecret
 
-# Read the input file containing the report information
-with open(inFile) as input:
-    data = json.load(input)
-
-# Update the report using the information from the source file
-updateReportContent(
-    data["content"],
-    name=data["name"],
-    path=data["location"],
-    auth=authInfo)
-
+delete_report(
+    name=report_name,
+    path=report_location,
+    auth=auth_info)

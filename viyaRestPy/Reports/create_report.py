@@ -1,25 +1,25 @@
-from .getReport import getReport
-from .updateReportContent import updateReportContent
-from ..Folders import getFolder, createFolder
-from ..callRest import callRest
+from .get_report import get_report
+from .update_report_content import update_report_content
+from ..Folders import get_folder, create_folder
+from ..call_rest import call_rest
 
 
-def createReport(name="", path="", content="", auth={}):
-    report = getReport(name=name, path=path, auth=auth)
+def create_report(name="", path="", content="", auth={}):
+    report = get_report(name=name, path=path, auth=auth)
     if report['json'] == {}:
-        folder = getFolder(path, auth=auth)
+        folder = get_folder(path, auth=auth)
         if folder["json"] == {}:
-            folder = createFolder(path, auth=auth)
-        folderId = folder["json"]["links"][0]["uri"]
+            folder = create_folder(path, auth=auth)
+        folder_id = folder["json"]["links"][0]["uri"]
         endpoint = "/reports/reports"
         data = {"name": name,
                 "description": name}
-        params = {"parentFolderUri": folderId}
+        params = {"parentFolderUri": folder_id}
         headers = {
             'Content-Type': 'application/vnd.sas.report+json',
             'Accept': 'application/vnd.sas.report+json'
         }
-        report = callRest(endpoint,
+        report = call_rest(endpoint,
                           "post",
                           data=data,
                           params=params,
@@ -27,7 +27,7 @@ def createReport(name="", path="", content="", auth={}):
                           auth=auth)
         print("The report named '{0:s}' has been created in '{1:s}'.".format(name, path))
         if bool(content):
-            updateReportContent(
+            update_report_content(
                 content=content,
                 report=report,
                 auth=auth)

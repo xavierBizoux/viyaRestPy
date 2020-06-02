@@ -1,25 +1,25 @@
 import sys
 import requests
-from .Authentication import generateAuthToken, readAuthToken, readOAuthToken
+from .Authentication import generate_auth_token, read_auth_token, read_oauth_token
 
 oauthToken = {}
 
-def callRest(endpoint, method, params={}, headers={"acceptType": "application/json", "contentType": "application/json"}, data={}, auth={}):
+def call_rest(endpoint, method, params={}, headers={"acceptType": "application/json", "contentType": "application/json"}, data={}, auth={}):
     global oauthToken
     # define list of valid methods
-    validMethods = ["get", "post", "delete", "put"]
-    if oauthToken == {}:
+    valid_methods = ["get", "post", "delete", "put"]
+    if oauth_token == {}:
         if bool(auth):
             if len(auth) == 5:
-                oauthToken = generateAuthToken(auth)
-            elif len(auth) == 1 and bool(auth["serverName"]):
-                oauthToken = readOAuthToken(auth["serverName"])
+                oauth_token = generate_auth_token(auth)
+            elif len(auth) == 1 and bool(auth["server_name"]):
+                oauth_token = read_oauth_token(auth["server_name"])
         else:
-            oauthToken = readAuthToken()
+            oauth_token = read_auth_token()
     # execute requests
-    url = oauthToken["baseUrl"] + endpoint
-    headers.update({"authorization": 'bearer ' + oauthToken["token"]})
-    if method in validMethods:
+    url = oauth_token["baseUrl"] + endpoint
+    headers.update({"authorization": 'bearer ' + oauth_token["token"]})
+    if method in valid_methods:
         response = requests.request(
             method,
             url,
@@ -44,4 +44,4 @@ def callRest(endpoint, method, params={}, headers={"acceptType": "application/js
             return result
     else:
         print("NOTE: {0:s} method is invalid. Valid methods are: {1:s}.".format(
-            method, ', '.join(map(str, validMethods))))
+            method, ', '.join(map(str, valid_methods))))

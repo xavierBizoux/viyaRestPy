@@ -1,23 +1,24 @@
-from .getReport import getReport
-from ..callRest import callRest
+from .get_report import get_report
+from ..call_rest import call_rest
 
-def deleteReport(name="", path="", reportId="", auth={}):
+
+def delete_report(name="", path="", report_id="", auth={}):
     # Function to delete an existing report
-    if reportId == "" and path == "" and name == "":
+    if report_id == "" and path == "" and name == "":
         raise ValueError(
             "You should provide a path and a name or the reportId.")
     else:
-        if reportId != "":
+        if report_id != "":
             if "/reports/reports" in reportId:
                 endpoint = "{0:s}".format(reportId)
             else:
-                endpoint = "/reports/reports/{0:s}".format(reportId)
+                endpoint = "/reports/reports/{0:s}".format(report_id)
         else:
             if path == "" or name == "":
                 raise ValueError(
                     "You should provide a path and a name for the report.")
             else:
-                report = getReport(name, path=path, auth=auth)
+                report = get_report(name, path=path, auth=auth)
                 if report != {}:
                     endpoint = "/reports/reports/{0:s}".format(
                         report["json"]["id"])
@@ -25,8 +26,11 @@ def deleteReport(name="", path="", reportId="", auth={}):
                         'Accept': '*/*'
                     }
                     try:
-                        response = callRest(endpoint, "delete", headers=headers, auth=auth)
+                        response = call_rest(
+                            endpoint, "delete", headers=headers, auth=auth)
                         return response
                     except:
-                        print("The report named '{0:s}' could not be deleted '{1:s}'.".format(name, path))
-                    print("The report named '{0:s}' located in '{1:s}' has been deleted.".format(name, path))
+                        print(
+                            "The report named '{0:s}' could not be deleted '{1:s}'.".format(name, path))
+                    print("The report named '{0:s}' located in '{1:s}' has been deleted.".format(
+                        name, path))

@@ -6,37 +6,37 @@ import webbrowser
 import platform
 from flask import Flask, render_template, request
 
-consulToken = ""
+consul_token = ""
 host = ""
-appName = ""
-appSecret = ""
-credentialsFile = ""
+app_name = ""
+app_secret = ""
+credentials_file = ""
 
 
-def generateIDToken(hostname, consulToken):
+def generate_id_token(hostname, consul_token):
     endpoint = "/SASLogon/oauth/clients/consul?callback=false&serviceId=app"
-    headers = {"X-Consul-Token": consulToken}
+    headers = {"X-Consul-Token": consul_token}
     response = requests.post(hostname+endpoint, headers=headers, verify=False)
-    accessToken = response.json()["access_token"]
-    return accessToken
+    access_token = response.json()["access_token"]
+    return access_token
 
 
-def generateApp(hostname, consulToken, clientId, clientSecret):
+def generate_app(hostname, consul_token, client_id, client_secret):
     global host
-    global appName
-    global appSecret
+    global app_name
+    global app_secret
     host = hostname
-    appName = clientId
-    appSecret = clientSecret
-    idToken = generateIDToken(hostname, consulToken)
+    app_name = client_id
+    app_secret = client_secret
+    id_token = generate_id_token(hostname, consul_token)
     endpoint = "/SASLogon/oauth/clients"
     headers = {
         "Content-Type": "application/json",
-        "Authorization": "Bearer " + idToken
+        "Authorization": "Bearer " + id_token
     }
     data = {
-        "client_id": clientId,
-        "client_secret": clientSecret,
+        "client_id": client_id,
+        "client_secret": client_secret,
         "scope": ["openid", "*"],
         "authorized_grant_types": ["authorization_code", "refresh_token"],
         "redirect_uri": "http://127.0.0.1:5000/accessToken"
@@ -44,18 +44,18 @@ def generateApp(hostname, consulToken, clientId, clientSecret):
     requests.post(hostname + endpoint, headers=headers, json=data, verify=False)
     url = "{0}/SASLogon/oauth/authorize?client_id={1}&response_type=code".format(
         hostname,
-        appName)
+        app_name)
     webbrowser.open(url, new=0)
 
 
-def generateAccessToken(hostname, code, appName, appSecret):
-    global credentialsFile
+def generate_access_token(hostname, code, app_name, app_secret):
+    global credentials_file
     endpoint = "/SASLogon/oauth/token"
     headers = {
         "Accept": "application/json",
         "Content-Type": "application/x-www-form-urlencoded"
     }
-    auth = (appName, appSecret)
+    auth = (app_name, app_secret)
     data = {
         "grant_type": "authorization_code",
         "code": code
@@ -66,25 +66,25 @@ def generateAccessToken(hostname, code, appName, appSecret):
         params=data,
         auth=auth, verify=False)
     if platform.system == "Windows":
-        credentialsFile = os.path.join(
+        credentials_file = os.path.join(
             os.path.expanduser('~'),
             '_sasauthinfo')
     else:
-        credentialsFile = os.path.join(
+        credentials_file = os.path.join(
             os.path.expanduser('~'),
             '.sas',
             '.sasauthinfo')
     try:
-        with open(credentialsFile, "r+") as inFile:
-            inData = json.loads(inFile.read())
-            inData.update({hostname: response.json()})
+        with open(credentials_file, "r+") as in_file:
+            in_data = json.loads(in_file.read())
+            in_data.update({hostname: response.json()})
     except:
-        inData = {hostname: response.json()}
+        in_data = {hostname: response.json()}
     try:
-        with open(credentialsFile, "w+") as outFile:
-            json.dump(inData, outFile)
+        with open(credentials_file, "w+") as out_file:
+            json.dump(in_data, out_file)
     except:
-        print("ERROR: Cannot write updated authentication information to: ", credentialsFile)
+        print("ERROR: Cannot write updated authentication information to: ", credentials_file)
         sys.exit()
     return(response.json())
 
@@ -97,8 +97,8 @@ def displayForm():
     if request.method == 'GET':
         return render_template("OAuthTokenGenerator.html")
     else:
-        generateApp(request.form['hostname'],
-                    request.form["consulToken"],
+        generate_app(request.form['hostname'],
+                    request.form["consul_token"],
                     request.form["client_id"],
                     request.form["client_secret"])
         return 'Processing!'
@@ -107,11 +107,11 @@ def displayForm():
 @app.route("/accessToken")
 def displayAuthorizationCode():
     global host
-    global appName
-    global appSecret
-    generateAccessToken(
+    global app_name
+    global app_secret
+    generate_access_token(
         host,
         request.args.get('code'),
-        appName,
-        appSecret)
-    return "The token has been generated properly and a copy has been saved under " + credentialsFile + ".\n To apply correct security on that file, please follow the instructions in <a href='https://go.documentation.sas.com/?docsetId=authinfo&docsetTarget=n0xo6z7e98y63dn1fj0g9l2j7oyq.htm&docsetVersion=9.4&locale=en#n1stv9zynsyf6rn1wbr3ejga6ozf' target='_blank' rel='noopener noreferrer'>this link</a>"
+        app_name,
+        app_secret)
+    return "The token has been generated properly and a copy has been saved under " + credentials_file + ".\n To apply correct security on that file, please follow the instructions in <a href='https://go.documentation.sas.com/?docsetId=authinfo&docsetTarget=n0xo6z7e98y63dn1fj0g9l2j7oyq.htm&docsetVersion=9.4&locale=en#n1stv9zynsyf6rn1wbr3ejga6ozf' target='_blank' rel='noopener noreferrer'>this link</a>"

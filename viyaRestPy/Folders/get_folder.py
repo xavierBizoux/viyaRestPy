@@ -1,11 +1,11 @@
-from ..callRest import callRest
+from ..call_rest import call_rest
 
 
-def getFolder(path, auth={}):
+def get_folder(path, auth={}):
     endpoint = "/folders/folders/@item"
     params = {"path": path}
     try:
-        response = callRest(
+        response = call_rest(
             endpoint,
             "get",
             params=params,

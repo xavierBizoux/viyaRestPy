@@ -1,7 +1,7 @@
 README.md
 setup.py
 viyaRestPy/__init__.py
-viyaRestPy/callRest.py
+viyaRestPy/call_rest.py
 viyaRestPy.egg-info/PKG-INFO
 viyaRestPy.egg-info/SOURCES.txt
 viyaRestPy.egg-info/dependency_links.txt

@@ -23,7 +23,7 @@ The project contains the package in folder *viyaRestPy* and examples in the *Exa
 
 ### Authentication
 
-For authentication, the callRest function uses 3 different authentication techniques.
+For authentication, the call_rest function uses 3 different authentication techniques.
 
 - [Introduction](#introduction)
   - [The package content](#the-package-content)
@@ -49,9 +49,9 @@ This authentication mechanism relies on an authentication information object. Th
 {
     "user": "username",
     "pw": "password",
-    "serverName": "urlToViya:port",
-    "appName": "applicationName",
-    "appSecret": "applicationSecret"
+    "server_name": "urlToViya:port",
+    "app_name": "applicationName",
+    "app_secret": "applicationSecret"
 }
 ```
 
@@ -63,7 +63,7 @@ If the previously described authentication mechanisms are failing, the authentic
 
 ### The usage
 
-The foundation of the viyaRestPy package is the callRest function. This function calls the SAS Viya REST API's and takes care of the wiring needed to authenticate the user and call the needed endpoint. The callRest function returns a response in the form of a JSON object containing: headers and json objects.
+The foundation of the viyaRestPy package is the call_rest function. This function calls the SAS Viya REST API's and takes care of the wiring needed to authenticate the user and call the needed endpoint. The call_rest function returns a response in the form of a JSON object containing: headers and json objects.
 
 ```json
 {
@@ -79,10 +79,10 @@ The package contains what we can call "Lego" functions that can be used for spec
 - Updating report content
 - ...
 
-These "Lego" functions are in fact calling the callRest function multiple times for different endpoints and passing information between the different calls.
+These "Lego" functions are in fact calling the call_rest function multiple times for different endpoints and passing information between the different calls.
 As this is a work in progress, the number of "Lego" functions is small but is expanding.
 
-The principle is that all of the "Lego" functions are to behave as the callRest function and return the same simple object containing a header and JSON object. Tasks like displaying results or writing information to a file should be left outside of the package. The examples are demonstrating how to read parameters from the command line and how to write output files or use input files to pass information to the "Lego" functions or the callRest function.
+The principle is that all of the "Lego" functions are to behave as the call_rest function and return the same simple object containing a header and JSON object. Tasks like displaying results or writing information to a file should be left outside of the package. The examples are demonstrating how to read parameters from the command line and how to write output files or use input files to pass information to the "Lego" functions or the call_rest function.
 
 ### The installation
 
@@ -156,15 +156,15 @@ As mentioned earlier the viyaRestPy package is developed to ease calls to SAS Vi
     from viyaRestPy.Folders import getFolder
 
     # Collect information needed for authentication
-    authInfo = {}
-    authInfo["user"] = "gatedemo003"
-    authInfo['pw'] = "lnxsas"
-    authInfo["serverName"] = "http://sasviya01.race.sas.com:80"
-    authInfo["appName"] = "app"
-    authInfo["appSecret"] = "appsecret"
+    auth_info = {}
+    auth_info["user"] = "gatedemo003"
+    auth_info['pw'] = "lnxsas"
+    auth_info["server_name"] = "http://sasviya01.race.sas.com:80"
+    auth_info["app_name"] = "app"
+    auth_info["app_secret"] = "appsecret"
 
     # Call the getFolder
-    folder = getFolder(path="/Users", auth=authInfo)
+    folder = getFolder(path="/Users", auth=auth_info)
 
     # Display name and description of the extracted folder
     print(folder["json"])["name"]
@@ -185,13 +185,13 @@ As mentioned earlier the viyaRestPy package is developed to ease calls to SAS Vi
 1. From that location, execute the code you saved:
 
     ```bash
-    py -3 myGetFolder
+    py -3 my_get_folder
     ```
 
     The results should look like this on Windows:
 
     ```bash
-    C:\Users\student\Documents\viyarestpy\Examples>py -3 myGetFolder.py
+    C:\Users\student\Documents\viyarestpy\Examples>py -3 my_get_folder.py
     Users
     Base Folder for all user folders.
 
@@ -201,5 +201,5 @@ As mentioned earlier the viyaRestPy package is developed to ease calls to SAS Vi
 ### Take away
 
 You have in a few lines of code retrieved the name and the description of a folder using REST API's. Using the viyaRestPy package eases the development process by hiding the complexity of the authentication and the REST API calls.
-If you want to better understand how to create your own functions using callRest function, you can have a look at the *getFolder.py* located under *viyaRestPy > Folders* in the Visual Studio Code project.
+If you want to better understand how to create your own functions using call_rest function, you can have a look at the *get_folder.py* located under *viyaRestPy > Folders* in the Visual Studio Code project.
 If you want to create your own functions, feel free to contribute!

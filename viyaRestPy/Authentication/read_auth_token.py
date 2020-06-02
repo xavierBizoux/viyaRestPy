@@ -2,12 +2,12 @@ import os
 import sys
 import json
 from datetime import datetime
-from .getBaseUrl import getBaseUrl
+from .get_base_url import get_base_url
 
-def readAuthToken():
-    global oauthToken
-    # get baseUrl
-    baseUrl = getBaseUrl()
+
+def read_auth_token():
+    global oauth_token
+    base_url = get_base_url()
     # get authentication information for the header
     credential_file = os.path.join(
         os.path.expanduser('~'), '.sas', 'credentials.json')
@@ -19,21 +19,21 @@ def readAuthToken():
         print("ERROR: Try refreshing your token with sas-admin auth login")
         sys.exit()
 
-    curProfile = os.environ.get("SAS_CLI_PROFILE", "Default")
-    if curProfile in data:
-        if datetime.strptime(data[curProfile]["expiry"][:-1], "%Y-%m-%dT%H:%M:%S") > datetime.now():
-            oauthToken= {
-                "baseUrl": baseUrl,
-                "token": data[curProfile]['access-token']
+    current_profile = os.environ.get("SAS_CLI_PROFILE", "Default")
+    if current_profile in data:
+        if datetime.strptime(data[current_profile]["expiry"][:-1], "%Y-%m-%dT%H:%M:%S") > datetime.now():
+            oauth_token = {
+                "baseUrl": base_url,
+                "token": data[current_profile]['access-token']
             }
-            return oauthToken
+            return oauth_token
         else:
             print(
-                "ERROR: cannot connect to {0:s} , your token expired".format(baseUrl))
+                "ERROR: cannot connect to {0:s} , your token expired".format(base_url))
             print("ERROR: Try refreshing your token with sas-admin auth login")
             sys.exit()
     else:
         print("ERROR: access token for profile '{0:s}' not in file: {1:s}".format(
-            curProfile, credential_file))
+            current_profile, credential_file))
         print("ERROR: Try refreshing your token with sas-admin auth login")
         sys.exit()

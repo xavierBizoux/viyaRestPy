@@ -4,7 +4,7 @@ from .Authentication import generateAuthToken, readAuthToken
 
 oauthToken = {}
 
-def callRest(endpoint, method, params={}, headers={"acceptType": "application/json", "contentType": "application/json"}, data={}, auth={}):
+def call_rest(endpoint, method, params={}, headers={"acceptType": "application/json", "contentType": "application/json"}, data={}, auth={}):
     global oauthToken
     # define list of valid methods
     validMethods = ["get", "post", "delete", "put"]
