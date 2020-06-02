@@ -1,6 +1,6 @@
 Metadata-Version: 1.0
 Name: viyaRestPy
-Version: 0.1
+Version: 0.2
 Summary: Python wrapper to ease access to SAS Viya REST API's
 Home-page: https://gitlab.sas.com/sbxxab/viyarestpy
 Author: Xavier Bizoux

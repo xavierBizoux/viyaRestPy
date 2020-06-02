@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='viyaRestPy',
-      version='0.1',
+      version='0.2',
       description="Python wrapper to ease access to SAS Viya REST API's",
       url='https://gitlab.sas.com/sbxxab/viyarestpy',
       author='Xavier Bizoux',
