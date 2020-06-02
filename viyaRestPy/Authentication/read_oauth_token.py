@@ -15,7 +15,7 @@ def refresh_token(hostname, current_info, credentials_file):
         "grant_type": "refresh_token",
         "refresh_token": current_info["refresh_token"]
     }
-    auth = ("gelApp", "lnxsas")
+    auth = ("Cla", "ClaSecret")
     response = requests.post(url, headers=headers, data=data, auth=auth)
     oauth_token.update({"token": response.json()["access_token"]})
     try:
@@ -28,6 +28,7 @@ def refresh_token(hostname, current_info, credentials_file):
     try:
         with open(credentials_file, "w") as out_file:
             json.dump(in_data, out_file)
+            print("updated")
     except:
         print("ERROR: Cannot write updated authentication information to: ",
               credentials_file)

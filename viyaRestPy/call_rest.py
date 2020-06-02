@@ -2,10 +2,10 @@ import sys
 import requests
 from .Authentication import generate_auth_token, read_auth_token, read_oauth_token
 
-oauthToken = {}
+oauth_token = {}
 
 def call_rest(endpoint, method, params={}, headers={"acceptType": "application/json", "contentType": "application/json"}, data={}, auth={}):
-    global oauthToken
+    global oauth_token
     # define list of valid methods
     valid_methods = ["get", "post", "delete", "put"]
     if oauth_token == {}:
@@ -17,7 +17,7 @@ def call_rest(endpoint, method, params={}, headers={"acceptType": "application/j
         else:
             oauth_token = read_auth_token()
     # execute requests
-    url = oauth_token["baseUrl"] + endpoint
+    url = oauth_token["base_url"] + endpoint
     headers.update({"authorization": 'bearer ' + oauth_token["token"]})
     if method in valid_methods:
         response = requests.request(

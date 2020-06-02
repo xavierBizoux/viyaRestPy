@@ -23,7 +23,7 @@ def read_auth_token():
     if current_profile in data:
         if datetime.strptime(data[current_profile]["expiry"][:-1], "%Y-%m-%dT%H:%M:%S") > datetime.now():
             oauth_token = {
-                "baseUrl": base_url,
+                "base_url": base_url,
                 "token": data[current_profile]['access-token']
             }
             return oauth_token

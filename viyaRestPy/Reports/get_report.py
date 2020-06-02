@@ -6,7 +6,7 @@ def get_report(name, folder_id="", path="", auth={}):
     # Identify the report based on passed report information
     selected_report = find_object_in_folder(
         name,
-        folder_iId=folder_id,
+        folder_id=folder_id,
         path=path,
         auth=auth)
     if selected_report["json"] != {}:
