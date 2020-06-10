@@ -48,7 +48,15 @@ def generate_app(hostname, consul_token, client_id, client_secret):
     client_url = "{0}{1}/{2}".format(host, endpoint, app_name)
     check_client = requests.head(client_url, headers=headers, verify=False)
     if check_client.status_code == 200:
-        return "exist"
+        client = requests.get(client_url, headers=headers, verify=False).json()
+        if "authorization_code" in client["authorized_grant_types"] and "redirect_uri" in client and client["redirect_uri"] == ['http://127.0.0.1:5000/accessToken']:
+            browser_url = "{0}/SASLogon/oauth/authorize?response_type=code&client_id={1}".format(
+                hostname,
+                app_name)
+            webbrowser.open(browser_url, new=0)
+            return "generate"
+        else:
+            return "exist"
     else:
         requests.post(url, headers=headers, json=data, verify=False)
         browser_url = "{0}/SASLogon/oauth/authorize?response_type=code&client_id={1}".format(
@@ -75,6 +83,9 @@ def generate_access_token(hostname, code, app_name, app_secret):
         headers=headers,
         params=data,
         auth=auth, verify=False)
+    auth_data = response.json()
+    auth_data.update({"client_id": app_name})
+    auth_data.update({"client_secret": app_secret})
     if platform.system == "Windows":
         credentials_file = os.path.join(
             os.path.expanduser('~'),
@@ -87,9 +98,9 @@ def generate_access_token(hostname, code, app_name, app_secret):
     try:
         with open(credentials_file, "r+") as in_file:
             in_data = json.loads(in_file.read())
-            in_data.update({hostname: response.json()})
+            in_data.update({hostname: auth_data})
     except:
-        in_data = {hostname: response.json()}
+        in_data = {hostname: auth_data}
     try:
         with open(credentials_file, "w+") as out_file:
             json.dump(in_data, out_file)
@@ -112,25 +123,24 @@ def displayForm():
         message["client_id"] = ""
         message["client_secret"] = ""
         message["text"] = ""
-        return render_template("OAuthTokenGenerator.html", message = message)
+        return render_template("OAuthTokenGenerator.html", message=message)
     else:
         status = generate_app(request.form['hostname'],
-                     request.form["consul_token"],
-                     request.form["client_id"],
-                     request.form["client_secret"])
+                              request.form["consul_token"],
+                              request.form["client_id"],
+                              request.form["client_secret"])
+        message["hostname"] = request.form['hostname']
+        message["consul_token"] = request.form['consul_token']
+        message["client_secret"] = request.form['client_secret']
         if status == "exist":
-            message["hostname"] = request.form['hostname']
-            message["consul_token"] = request.form['consul_token']
-            message["client_secret"] = request.form['client_secret']
-            message["text"] = "The Client Application Name already exists. Please choose another name!"
-            return render_template("OAuthTokenGenerator.html", message = message)
+            message["text"] = "The Client Application Name already exists. Please choose another one."
+        elif status == "generate":
+            message["text"] = "The Client Application Name already exists. Updating the sasauthinfo file."
         else:
-            message["hostname"] = request.form['hostname']
-            message["consul_token"] = request.form['consul_token']
             message["client_id"] = request.form['client_id']
-            message["client_secret"] = request.form['client_secret']
-            message["text"] = "Creating a new client application with name: {0}".format(request.form['client_id'])
-            return render_template("OAuthTokenGenerator.html", message = message)
+            message["text"] = "Creating a new client application with name: {0}".format(
+                request.form['client_id'])
+        return render_template("OAuthTokenGenerator.html", message=message)
 
 
 @app.route("/accessToken")

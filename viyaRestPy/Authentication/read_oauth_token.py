@@ -15,7 +15,7 @@ def refresh_token(hostname, current_info, credentials_file):
         "grant_type": "refresh_token",
         "refresh_token": current_info["refresh_token"]
     }
-    auth = ("Cla", "ClaSecret")
+    auth = (current_info["client_id"], current_info["client_secret"])
     response = requests.post(url, headers=headers, data=data, auth=auth)
     oauth_token.update({"token": response.json()["access_token"]})
     try:
