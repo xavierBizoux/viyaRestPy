@@ -153,7 +153,7 @@ As mentioned earlier the viyaRestPy package is developed to ease calls to SAS Vi
 
     ```python
     # Import module(s)
-    from viyaRestPy.Folders import getFolder
+    from viyaRestPy.Folders import get_folder
 
     # Collect information needed for authentication
     auth_info = {}
@@ -163,8 +163,8 @@ As mentioned earlier the viyaRestPy package is developed to ease calls to SAS Vi
     auth_info["app_name"] = "app"
     auth_info["app_secret"] = "appsecret"
 
-    # Call the getFolder
-    folder = getFolder(path="/Users", auth=auth_info)
+    # Call the get_folder
+    folder = get_folder(path="/Users", auth=auth_info)
 
     # Display name and description of the extracted folder
     print(folder["json"])["name"]
