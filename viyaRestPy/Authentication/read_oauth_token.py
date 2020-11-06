@@ -16,7 +16,7 @@ def refresh_token(hostname, current_info, credentials_file):
         "refresh_token": current_info["refresh_token"]
     }
     auth = (current_info["client_id"], current_info["client_secret"])
-    response = requests.post(url, headers=headers, data=data, auth=auth)
+    response = requests.post(url, headers=headers, data=data, auth=auth, verify=False)
     oauth_token.update({"token": response.json()["access_token"]})
     try:
         with open(credentials_file, "r") as in_file:
@@ -53,7 +53,7 @@ def read_oauth_token(hostname):
         headers = {"authorization": 'bearer ' +
                    oauth_token["token"], "Accept": "application/json"}
         test = requests.get(
-            oauth_token["base_url"] + "/folders/folders/@myFolder", headers=headers)
+            oauth_token["base_url"] + "/folders/folders/@myFolder", headers=headers, verify=False)
         if test.status_code == 401:
             print("NOTE: Refreshing token")
             refresh_token(hostname, data[hostname], credentials_file)

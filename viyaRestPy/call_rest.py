@@ -25,7 +25,8 @@ def call_rest(endpoint, method, params={}, headers={"acceptType": "application/j
             url,
             headers=headers,
             params=params,
-            json=data)
+            json=data,
+            verify=False)
         if (400 <= response.status_code <= 599):
             print("ERROR:{0:s}".format(response.text))
             sys.exit()

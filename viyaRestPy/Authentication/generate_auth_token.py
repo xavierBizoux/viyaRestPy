@@ -15,7 +15,8 @@ def generate_auth_token(auth_info):
         url,
         data=data,
         auth=auth,
-        headers=headers)
+        headers=headers,
+        verify=False)
     if (400 <= response.status_code <= 599):
         print("ERROR:{0:s}".format(response.text))
         sys.exit()

@@ -82,7 +82,8 @@ def generate_access_token(hostname, code, app_name, app_secret):
         hostname + endpoint,
         headers=headers,
         params=data,
-        auth=auth, verify=False)
+        auth=auth,
+        verify=False)
     auth_data = response.json()
     auth_data.update({"client_id": app_name})
     auth_data.update({"client_secret": app_secret})
