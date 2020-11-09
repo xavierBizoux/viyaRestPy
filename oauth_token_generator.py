@@ -155,3 +155,6 @@ def displayAuthorizationCode():
         app_name,
         app_secret)
     return "The token has been generated properly and a copy has been saved under " + credentials_file + ".\n To apply correct security on that file, please follow the instructions in <a href='https://go.documentation.sas.com/?docsetId=authinfo&docsetTarget=n0xo6z7e98y63dn1fj0g9l2j7oyq.htm&docsetVersion=9.4&locale=en#n1stv9zynsyf6rn1wbr3ejga6ozf' target='_blank' rel='noopener noreferrer'>this link</a>"
+
+if __name__ == "__main__":
+    app.run()
